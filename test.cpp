@@ -79,19 +79,17 @@ vector<InputDataStructure> readCSV(string &filename)
     return dataList;
 }
 
-void pushHeapify(vector<InputDataStructure> &heap, int index)
+void reheapUp(vector<InputDataStructure> &heap, int index)
 {
+    // index 0 je root
     while (index != 0 && heap[(index - 1) / 2].NumSkills < heap[index].NumSkills)
     {
-        InputDataStructure temp = heap[index];
-        heap[index] = heap[(index - 1) / 2];
-        heap[(index - 1) / 2] = temp;
-
+        swap(heap[index], heap[(index - 1) / 2]);
         index = (index - 1) / 2;
     }
 }
 
-void popHeapify(vector<InputDataStructure> &heap, int index)
+void reheapDown(vector<InputDataStructure> &heap, int index)
 {
     int largest = index;
     int left = 2 * index + 1;
@@ -109,11 +107,8 @@ void popHeapify(vector<InputDataStructure> &heap, int index)
 
     if (largest != index)
     {
-        InputDataStructure temp = heap[index];
-        heap[index] = heap[largest];
-        heap[largest] = temp;
-
-        popHeapify(heap, largest);
+        swap(heap[index], heap[largest]);
+        reheapDown(heap, largest);
     }
 }
 
@@ -124,7 +119,7 @@ InputDataStructure pop(vector<InputDataStructure> &heap)
     InputDataStructure top = heap.front();
     heap[0] = heap.back();
     heap.pop_back();
-    popHeapify(heap, 0);
+    reheapDown(heap, 0);
     return top;
 }
 
@@ -164,7 +159,7 @@ int main()
     for (auto it = dataList.begin(); it != dataList.end(); ++it)
     {
         heap.push_back(*it);
-        pushHeapify(heap, heap.size() - 1);
+        reheapUp(heap, heap.size() - 1);
     }
 
     cout << left << setw(10) << "Age"

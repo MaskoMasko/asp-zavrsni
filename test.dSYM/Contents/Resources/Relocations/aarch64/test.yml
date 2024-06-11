@@ -89,11 +89,11 @@ relocations:
   - { offsetInCU: 0xE899, offset: 0xE899, size: 0x8, addend: 0x0, symName: __ZN18InputDataStructureD1Ev, symObjAddr: 0xAB4, symBinAddr: 0x100002F74, symSize: 0x2C }
   - { offsetInCU: 0xE8C4, offset: 0xE8C4, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorI18InputDataStructureNS_9allocatorIS1_EEED1B8ue170006Ev, symObjAddr: 0xAE0, symBinAddr: 0x100002FA0, symSize: 0x2C }
   - { offsetInCU: 0xE8F2, offset: 0xE8F2, size: 0x8, addend: 0x0, symName: __ZNSt3__114basic_ifstreamIcNS_11char_traitsIcEEED1Ev, symObjAddr: 0xB0C, symBinAddr: 0x100002FCC, symSize: 0x70 }
-  - { offsetInCU: 0xE91D, offset: 0xE91D, size: 0x8, addend: 0x0, symName: __Z11pushHeapifyRNSt3__16vectorI18InputDataStructureNS_9allocatorIS1_EEEEi, symObjAddr: 0xB7C, symBinAddr: 0x10000303C, symSize: 0x188 }
+  - { offsetInCU: 0xE91D, offset: 0xE91D, size: 0x8, addend: 0x0, symName: __Z8reheapUpRNSt3__16vectorI18InputDataStructureNS_9allocatorIS1_EEEEi, symObjAddr: 0xB7C, symBinAddr: 0x10000303C, symSize: 0x188 }
   - { offsetInCU: 0xE968, offset: 0xE968, size: 0x8, addend: 0x0, symName: __ZNSt3__16vectorI18InputDataStructureNS_9allocatorIS1_EEEixB8ue170006Em, symObjAddr: 0xD04, symBinAddr: 0x1000031C4, symSize: 0x2C }
   - { offsetInCU: 0xE99E, offset: 0xE99E, size: 0x8, addend: 0x0, symName: __ZN18InputDataStructureC1ERKS_, symObjAddr: 0xD30, symBinAddr: 0x1000031F0, symSize: 0x34 }
   - { offsetInCU: 0xE9D2, offset: 0xE9D2, size: 0x8, addend: 0x0, symName: __ZN18InputDataStructureaSERKS_, symObjAddr: 0xD64, symBinAddr: 0x100003224, symSize: 0xF8 }
-  - { offsetInCU: 0xEA01, offset: 0xEA01, size: 0x8, addend: 0x0, symName: __Z10popHeapifyRNSt3__16vectorI18InputDataStructureNS_9allocatorIS1_EEEEi, symObjAddr: 0xE5C, symBinAddr: 0x10000331C, symSize: 0x208 }
+  - { offsetInCU: 0xEA01, offset: 0xEA01, size: 0x8, addend: 0x0, symName: __Z10reheapDownRNSt3__16vectorI18InputDataStructureNS_9allocatorIS1_EEEEi, symObjAddr: 0xE5C, symBinAddr: 0x10000331C, symSize: 0x208 }
   - { offsetInCU: 0xEA77, offset: 0xEA77, size: 0x8, addend: 0x0, symName: __ZNKSt3__16vectorI18InputDataStructureNS_9allocatorIS1_EEE4sizeB8ue170006Ev, symObjAddr: 0x1064, symBinAddr: 0x100003524, symSize: 0x28 }
   - { offsetInCU: 0xEA9B, offset: 0xEA9B, size: 0x8, addend: 0x0, symName: __Z3popRNSt3__16vectorI18InputDataStructureNS_9allocatorIS1_EEEE, symObjAddr: 0x108C, symBinAddr: 0x10000354C, symSize: 0x13C }
   - { offsetInCU: 0xEAD7, offset: 0xEAD7, size: 0x8, addend: 0x0, symName: __ZNKSt3__16vectorI18InputDataStructureNS_9allocatorIS1_EEE5emptyB8ue170006Ev, symObjAddr: 0x11C8, symBinAddr: 0x100003688, symSize: 0x28 }
