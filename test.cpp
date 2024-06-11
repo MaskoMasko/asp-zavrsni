@@ -91,24 +91,25 @@ void reheapUp(vector<InputDataStructure> &heap, int index)
 
 void reheapDown(vector<InputDataStructure> &heap, int index)
 {
-    int largest = index;
-    int left = 2 * index + 1;
-    int right = 2 * index + 2;
+    int largestChildIndex = index;
+    int leftChildIndex = 2 * index + 1;
+    int rightChildIndex = 2 * index + 2;
 
-    if (left < heap.size() && heap[left].NumSkills > heap[largest].NumSkills)
+    if (leftChildIndex < heap.size() && heap[leftChildIndex].NumSkills > heap[largestChildIndex].NumSkills)
     {
-        largest = left;
+        largestChildIndex = leftChildIndex;
     }
 
-    if (right < heap.size() && heap[right].NumSkills > heap[largest].NumSkills)
+    if (rightChildIndex < heap.size() && heap[rightChildIndex].NumSkills > heap[largestChildIndex].NumSkills)
     {
-        largest = right;
+        largestChildIndex = rightChildIndex;
     }
 
-    if (largest != index)
+    if (largestChildIndex != index)
     {
-        swap(heap[index], heap[largest]);
-        reheapDown(heap, largest);
+        // ako najveći element nije na trenutnoj poziciji, zamijeni i nastavi
+        swap(heap[index], heap[largestChildIndex]);
+        reheapDown(heap, largestChildIndex);
     }
 }
 
@@ -116,6 +117,7 @@ InputDataStructure pop(vector<InputDataStructure> &heap)
 {
     if (heap.empty())
         throw runtime_error("Heap is empty");
+    // klasik switcheroo
     InputDataStructure top = heap.front();
     heap[0] = heap.back();
     heap.pop_back();
@@ -126,7 +128,7 @@ InputDataStructure pop(vector<InputDataStructure> &heap)
 void printData(InputDataStructure &data)
 {
     string concatenatedSkills;
-    int maxSkills = data.ComputerSkills.size() > 4 ? 4 : data.ComputerSkills.size(); // print only first 4 skills for better output readability
+    int maxSkills = data.ComputerSkills.size() > 4 ? 4 : data.ComputerSkills.size(); // prikazujemo maksimalno 4 computer skillsa zbog preglednosti
     bool truncated = maxSkills < data.ComputerSkills.size();
     for (int i = 0; i < maxSkills; ++i)
     {
@@ -141,6 +143,7 @@ void printData(InputDataStructure &data)
         concatenatedSkills += "...";
     }
 
+    // left - lijevo poravnanje, setw - sirina ispisa
     cout << left << setw(10) << data.Age
          << setw(15) << data.EdLevel
          << setw(20) << data.Country.substr(0, 14)
@@ -156,6 +159,7 @@ int main()
     vector<InputDataStructure> dataList = readCSV(filename);
     vector<InputDataStructure> heap;
 
+    // gradnja gomile
     for (auto it = dataList.begin(); it != dataList.end(); ++it)
     {
         heap.push_back(*it);
