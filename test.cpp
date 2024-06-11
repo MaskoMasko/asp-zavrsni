@@ -9,8 +9,7 @@
 
 using namespace std;
 
-// Struktura za pohranu zapisa
-struct Record
+struct InputDataStructure
 {
     string Age;
     string Accessibility;
@@ -24,13 +23,13 @@ struct Record
     string Country;
     double PreviousSalary;
     vector<string> ComputerSkills;
-    int NumSkills; // Broj vještina
+    int NumSkills; // computed num of skills
     int Employed;
 };
 
-// Funkcija za podjelu stringa na dijelove prema delimiteru
 vector<string> split(const string &str, char delim)
 {
+    // splits string by delimiter (, in CSV file)
     stringstream ss(str);
     string item;
     vector<string> tokens;
@@ -41,20 +40,19 @@ vector<string> split(const string &str, char delim)
     return tokens;
 }
 
-// Funkcija za čitanje podataka iz CSV datoteke
-vector<Record> readCSV(const string &filename)
+vector<InputDataStructure> readCSV(const string &filename)
 {
     ifstream file(filename);
     string line;
-    vector<Record> records;
+    vector<InputDataStructure> records;
 
-    // Preskoči prvi redak (zaglavlja)
+    // skip header line (where column names are stored)
     getline(file, line);
 
     while (getline(file, line))
     {
         vector<string> tokens = split(line, ',');
-        Record record;
+        InputDataStructure record;
         record.Age = tokens[1];
         record.Accessibility = tokens[2];
         record.EdLevel = tokens[3];
@@ -66,7 +64,9 @@ vector<Record> readCSV(const string &filename)
         record.YearsCodePro = stoi(tokens[9]);
         record.Country = tokens[10];
         record.PreviousSalary = stod(tokens[11]);
+        // split computer skills by ; because they are stored as a single string
         record.ComputerSkills = split(tokens[12], ';');
+        // computed prop
         record.NumSkills = record.ComputerSkills.size();
         record.Employed = stoi(tokens[13]);
         records.push_back(record);
@@ -75,87 +75,50 @@ vector<Record> readCSV(const string &filename)
     return records;
 }
 
-// Max-heap za usporedbu zapisa prema broju vještina
-class MaxHeap
+void pushHeapify(vector<InputDataStructure> &heap, int index)
 {
-public:
-    MaxHeap() {}
-
-    void push(const Record &record)
+    while (index != 0 && heap[(index - 1) / 2].NumSkills < heap[index].NumSkills)
     {
-        heap.push_back(record);
-        pushHeapify(heap.size() - 1);
+        swap(heap[index], heap[(index - 1) / 2]);
+        index = (index - 1) / 2;
+    }
+}
+
+void popHeapify(vector<InputDataStructure> &heap, int index)
+{
+    int largest = index;
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+
+    if (left < heap.size() && heap[left].NumSkills > heap[largest].NumSkills)
+    {
+        largest = left;
     }
 
-    Record pop()
+    if (right < heap.size() && heap[right].NumSkills > heap[largest].NumSkills)
     {
-        if (heap.empty())
-            throw runtime_error("Heap is empty");
-        Record top = heap.front();
-        heap[0] = heap.back();
-        heap.pop_back();
-        popHeapify(0);
-        return top;
+        largest = right;
     }
 
-    bool isEmpty() const
+    if (largest != index)
     {
-        return heap.empty();
+        swap(heap[index], heap[largest]);
+        popHeapify(heap, largest);
     }
+}
 
-private:
-    vector<Record> heap;
+InputDataStructure pop(vector<InputDataStructure> &heap)
+{
+    if (heap.empty())
+        throw runtime_error("Heap is empty");
+    InputDataStructure top = heap.front();
+    heap[0] = heap.back();
+    heap.pop_back();
+    popHeapify(heap, 0);
+    return top;
+}
 
-    void pushHeapify(int index)
-    {
-        while (index != 0 && heap[parent(index)].NumSkills < heap[index].NumSkills)
-        {
-            swap(heap[index], heap[parent(index)]);
-            index = parent(index);
-        }
-    }
-
-    void popHeapify(int index)
-    {
-        int largest = index;
-        int left = leftChild(index);
-        int right = rightChild(index);
-
-        if (left < heap.size() && heap[left].NumSkills > heap[largest].NumSkills)
-        {
-            largest = left;
-        }
-
-        if (right < heap.size() && heap[right].NumSkills > heap[largest].NumSkills)
-        {
-            largest = right;
-        }
-
-        if (largest != index)
-        {
-            swap(heap[index], heap[largest]);
-            popHeapify(largest);
-        }
-    }
-
-    int parent(int index) const
-    {
-        return (index - 1) / 2;
-    }
-
-    int leftChild(int index) const
-    {
-        return 2 * index + 1;
-    }
-
-    int rightChild(int index) const
-    {
-        return 2 * index + 2;
-    }
-};
-
-// Funkcija za formatirani ispis zapisa
-void printRecord(const Record &record)
+void printRecord(const InputDataStructure &record)
 {
     string concatenatedSkills;
     for (size_t i = 0; i < record.ComputerSkills.size(); ++i)
@@ -178,26 +141,27 @@ void printRecord(const Record &record)
 
 int main()
 {
-    vector<Record> records = readCSV("skup_podataka.csv");
-    MaxHeap heap;
+    vector<InputDataStructure> records = readCSV("skup_podataka.csv");
+    vector<InputDataStructure> heap;
 
-    for (vector<Record>::iterator it = records.begin(); it != records.end(); ++it)
+    for (vector<InputDataStructure>::iterator it = records.begin(); it != records.end(); ++it)
     {
-        heap.push(*it);
+        heap.push_back(*it);
+        pushHeapify(heap, heap.size() - 1);
     }
 
-    cout << left << setw(10) << "Age"
+    cout << left << setw(15) << "Age"
          << setw(15) << "EdLevel"
-         << setw(10) << "Country"
-         << setw(10) << "Salary"
+         << setw(20) << "Country"
+         << setw(15) << "Salary"
          << setw(10) << "Skills"
-         << setw(30) << "ComputerSkills"
+         << setw(50) << "ComputerSkills"
          << endl;
     cout << string(100, '-') << endl;
 
-    while (!heap.isEmpty())
+    while (!heap.empty())
     {
-        Record top = heap.pop();
+        InputDataStructure top = pop(heap);
         printRecord(top);
     }
 
