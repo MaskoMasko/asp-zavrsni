@@ -125,7 +125,9 @@ InputDataStructure pop(vector<InputDataStructure> &heap)
 void printRecord(InputDataStructure &record)
 {
     string concatenatedSkills;
-    for (int i = 0; i < record.ComputerSkills.size(); ++i)
+    int maxSkills = record.ComputerSkills.size() > 4 ? 4 : record.ComputerSkills.size(); // print only first 4 skills for better output readability
+    bool truncated = maxSkills < record.ComputerSkills.size();
+    for (int i = 0; i < maxSkills; ++i)
     {
         concatenatedSkills += record.ComputerSkills[i];
         if (i < record.ComputerSkills.size() - 1)
@@ -133,10 +135,14 @@ void printRecord(InputDataStructure &record)
             concatenatedSkills += ", ";
         }
     }
+    if (truncated)
+    {
+        concatenatedSkills += "...";
+    }
 
     cout << left << setw(10) << record.Age
          << setw(15) << record.EdLevel
-         << setw(10) << record.Country
+         << setw(20) << record.Country.substr(0, 14)
          << setw(10) << record.PreviousSalary
          << setw(10) << record.NumSkills
          << setw(30) << concatenatedSkills
@@ -157,7 +163,7 @@ int main()
 
     cout << left << setw(10) << "Age"
          << setw(15) << "EdLevel"
-         << setw(10) << "Country"
+         << setw(20) << "Country"
          << setw(10) << "Salary"
          << setw(10) << "Skills"
          << setw(30) << "ComputerSkills"
