@@ -150,12 +150,12 @@ int main()
         pushHeapify(heap, heap.size() - 1);
     }
 
-    cout << left << setw(15) << "Age"
+    cout << left << setw(10) << "Age"
          << setw(15) << "EdLevel"
-         << setw(20) << "Country"
-         << setw(15) << "Salary"
+         << setw(10) << "Country"
+         << setw(10) << "Salary"
          << setw(10) << "Skills"
-         << setw(50) << "ComputerSkills"
+         << setw(30) << "ComputerSkills"
          << endl;
     cout << string(100, '-') << endl;
 
