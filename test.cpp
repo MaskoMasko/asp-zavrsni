@@ -33,7 +33,7 @@ vector<string> split(const string &str, char delim)
     int start = 0;
     int end = str.find(delim);
 
-    while (end != string::npos)
+    while (end != -1)
     {
         tokens.push_back(str.substr(start, end - start));
         start = end + 1;
