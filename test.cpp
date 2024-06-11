@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -30,13 +29,18 @@ struct InputDataStructure
 vector<string> split(const string &str, char delim)
 {
     // splits string by delimiter (, in CSV file)
-    stringstream ss(str);
-    string item;
     vector<string> tokens;
-    while (getline(ss, item, delim))
+    int start = 0;
+    int end = str.find(delim);
+
+    while (end != string::npos)
     {
-        tokens.push_back(item);
+        tokens.push_back(str.substr(start, end - start));
+        start = end + 1;
+        end = str.find(delim, start);
     }
+    tokens.push_back(str.substr(start));
+
     return tokens;
 }
 
@@ -121,7 +125,7 @@ InputDataStructure pop(vector<InputDataStructure> &heap)
 void printRecord(const InputDataStructure &record)
 {
     string concatenatedSkills;
-    for (size_t i = 0; i < record.ComputerSkills.size(); ++i)
+    for (int i = 0; i < record.ComputerSkills.size(); ++i)
     {
         concatenatedSkills += record.ComputerSkills[i];
         if (i < record.ComputerSkills.size() - 1)
@@ -130,13 +134,13 @@ void printRecord(const InputDataStructure &record)
         }
     }
 
-    std::cout << std::left << std::setw(10) << record.Age
-              << std::setw(15) << record.EdLevel
-              << std::setw(10) << record.Country
-              << std::setw(10) << record.PreviousSalary
-              << std::setw(10) << record.NumSkills
-              << std::setw(30) << concatenatedSkills
-              << std::endl;
+    cout << left << setw(10) << record.Age
+         << setw(15) << record.EdLevel
+         << setw(10) << record.Country
+         << setw(10) << record.PreviousSalary
+         << setw(10) << record.NumSkills
+         << setw(30) << concatenatedSkills
+         << endl;
 }
 
 int main()
