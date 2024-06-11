@@ -48,7 +48,7 @@ vector<InputDataStructure> readCSV(string &filename)
 {
     ifstream file(filename);
     string line;
-    vector<InputDataStructure> records;
+    vector<InputDataStructure> dataList;
 
     // skip header line (where column names are stored)
     getline(file, line);
@@ -56,27 +56,27 @@ vector<InputDataStructure> readCSV(string &filename)
     while (getline(file, line))
     {
         vector<string> tokens = splitString(line, ',');
-        InputDataStructure record;
-        record.Age = tokens[1];
-        record.Accessibility = tokens[2];
-        record.EdLevel = tokens[3];
-        record.Employment = tokens[4];
-        record.Gender = tokens[5];
-        record.MentalHealth = tokens[6];
-        record.MainBranch = tokens[7];
-        record.YearsCode = stoi(tokens[8]);
-        record.YearsCodePro = stoi(tokens[9]);
-        record.Country = tokens[10];
-        record.PreviousSalary = stod(tokens[11]);
+        InputDataStructure data;
+        data.Age = tokens[1];
+        data.Accessibility = tokens[2];
+        data.EdLevel = tokens[3];
+        data.Employment = tokens[4];
+        data.Gender = tokens[5];
+        data.MentalHealth = tokens[6];
+        data.MainBranch = tokens[7];
+        data.YearsCode = stoi(tokens[8]);
+        data.YearsCodePro = stoi(tokens[9]);
+        data.Country = tokens[10];
+        data.PreviousSalary = stod(tokens[11]);
         // split computer skills by ; because they are stored as a single string
-        record.ComputerSkills = splitString(tokens[12], ';');
+        data.ComputerSkills = splitString(tokens[12], ';');
         // computed prop
-        record.NumSkills = record.ComputerSkills.size();
-        record.Employed = stoi(tokens[13]);
-        records.push_back(record);
+        data.NumSkills = data.ComputerSkills.size();
+        data.Employed = stoi(tokens[13]);
+        dataList.push_back(data);
     }
 
-    return records;
+    return dataList;
 }
 
 void pushHeapify(vector<InputDataStructure> &heap, int index)
@@ -122,15 +122,15 @@ InputDataStructure pop(vector<InputDataStructure> &heap)
     return top;
 }
 
-void printRecord(InputDataStructure &record)
+void printData(InputDataStructure &data)
 {
     string concatenatedSkills;
-    int maxSkills = record.ComputerSkills.size() > 4 ? 4 : record.ComputerSkills.size(); // print only first 4 skills for better output readability
-    bool truncated = maxSkills < record.ComputerSkills.size();
+    int maxSkills = data.ComputerSkills.size() > 4 ? 4 : data.ComputerSkills.size(); // print only first 4 skills for better output readability
+    bool truncated = maxSkills < data.ComputerSkills.size();
     for (int i = 0; i < maxSkills; ++i)
     {
-        concatenatedSkills += record.ComputerSkills[i];
-        if (i < record.ComputerSkills.size() - 1)
+        concatenatedSkills += data.ComputerSkills[i];
+        if (i < data.ComputerSkills.size() - 1)
         {
             concatenatedSkills += ", ";
         }
@@ -140,11 +140,11 @@ void printRecord(InputDataStructure &record)
         concatenatedSkills += "...";
     }
 
-    cout << left << setw(10) << record.Age
-         << setw(15) << record.EdLevel
-         << setw(20) << record.Country.substr(0, 14)
-         << setw(10) << record.PreviousSalary
-         << setw(10) << record.NumSkills
+    cout << left << setw(10) << data.Age
+         << setw(15) << data.EdLevel
+         << setw(20) << data.Country.substr(0, 14)
+         << setw(10) << data.PreviousSalary
+         << setw(10) << data.NumSkills
          << setw(30) << concatenatedSkills
          << endl;
 }
@@ -152,10 +152,10 @@ void printRecord(InputDataStructure &record)
 int main()
 {
     string filename = "skup_podataka.csv";
-    vector<InputDataStructure> records = readCSV(filename);
+    vector<InputDataStructure> dataList = readCSV(filename);
     vector<InputDataStructure> heap;
 
-    for (vector<InputDataStructure>::iterator it = records.begin(); it != records.end(); ++it)
+    for (auto it = dataList.begin(); it != dataList.end(); ++it)
     {
         heap.push_back(*it);
         pushHeapify(heap, heap.size() - 1);
@@ -173,7 +173,7 @@ int main()
     while (!heap.empty())
     {
         InputDataStructure top = pop(heap);
-        printRecord(top);
+        printData(top);
     }
 
     return 0;
