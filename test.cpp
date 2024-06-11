@@ -28,10 +28,10 @@ struct InputDataStructure
 
 vector<string> splitString(string &str, char delim)
 {
-    // splits string by delimiter (, in CSV file)
+    // splits string by delimiter (, za zasebne podatke u csv zapisu podataka)
     vector<string> tokens;
     int start = 0;
-    int end = str.find(delim);
+    int end = str.find(delim); // kada delimiter nije pronadjen u stringu returna se -1
 
     while (end != -1)
     {
@@ -39,7 +39,7 @@ vector<string> splitString(string &str, char delim)
         start = end + 1;
         end = str.find(delim, start);
     }
-    tokens.push_back(str.substr(start));
+    tokens.push_back(str.substr(start)); // posljedni podatak
 
     return tokens;
 }
@@ -50,7 +50,7 @@ vector<InputDataStructure> readCSV(string &filename)
     string line;
     vector<InputDataStructure> dataList;
 
-    // skip header line (where column names are stored)
+    // preskacemo prvi redak (nazivi stupaca)
     getline(file, line);
 
     while (getline(file, line))
@@ -64,10 +64,10 @@ vector<InputDataStructure> readCSV(string &filename)
         data.Gender = tokens[5];
         data.MentalHealth = tokens[6];
         data.MainBranch = tokens[7];
-        data.YearsCode = stoi(tokens[8]);
+        data.YearsCode = stoi(tokens[8]); // stoi je funkcija koja pretvara string double u int
         data.YearsCodePro = stoi(tokens[9]);
         data.Country = tokens[10];
-        data.PreviousSalary = stod(tokens[11]);
+        data.PreviousSalary = stod(tokens[11]); // stod je funkcija koja pretvara string u double
         // split computer skills by ; because they are stored as a single string
         data.ComputerSkills = splitString(tokens[12], ';');
         // computed prop
@@ -83,7 +83,10 @@ void pushHeapify(vector<InputDataStructure> &heap, int index)
 {
     while (index != 0 && heap[(index - 1) / 2].NumSkills < heap[index].NumSkills)
     {
-        swap(heap[index], heap[(index - 1) / 2]);
+        InputDataStructure temp = heap[index];
+        heap[index] = heap[(index - 1) / 2];
+        heap[(index - 1) / 2] = temp;
+
         index = (index - 1) / 2;
     }
 }
@@ -106,7 +109,10 @@ void popHeapify(vector<InputDataStructure> &heap, int index)
 
     if (largest != index)
     {
-        swap(heap[index], heap[largest]);
+        InputDataStructure temp = heap[index];
+        heap[index] = heap[largest];
+        heap[largest] = temp;
+
         popHeapify(heap, largest);
     }
 }
