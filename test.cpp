@@ -26,7 +26,7 @@ struct InputDataStructure
     int Employed;
 };
 
-vector<string> split(const string &str, char delim)
+vector<string> splitString(string &str, char delim)
 {
     // splits string by delimiter (, in CSV file)
     vector<string> tokens;
@@ -44,7 +44,7 @@ vector<string> split(const string &str, char delim)
     return tokens;
 }
 
-vector<InputDataStructure> readCSV(const string &filename)
+vector<InputDataStructure> readCSV(string &filename)
 {
     ifstream file(filename);
     string line;
@@ -55,7 +55,7 @@ vector<InputDataStructure> readCSV(const string &filename)
 
     while (getline(file, line))
     {
-        vector<string> tokens = split(line, ',');
+        vector<string> tokens = splitString(line, ',');
         InputDataStructure record;
         record.Age = tokens[1];
         record.Accessibility = tokens[2];
@@ -69,7 +69,7 @@ vector<InputDataStructure> readCSV(const string &filename)
         record.Country = tokens[10];
         record.PreviousSalary = stod(tokens[11]);
         // split computer skills by ; because they are stored as a single string
-        record.ComputerSkills = split(tokens[12], ';');
+        record.ComputerSkills = splitString(tokens[12], ';');
         // computed prop
         record.NumSkills = record.ComputerSkills.size();
         record.Employed = stoi(tokens[13]);
@@ -122,7 +122,7 @@ InputDataStructure pop(vector<InputDataStructure> &heap)
     return top;
 }
 
-void printRecord(const InputDataStructure &record)
+void printRecord(InputDataStructure &record)
 {
     string concatenatedSkills;
     for (int i = 0; i < record.ComputerSkills.size(); ++i)
@@ -145,7 +145,8 @@ void printRecord(const InputDataStructure &record)
 
 int main()
 {
-    vector<InputDataStructure> records = readCSV("skup_podataka.csv");
+    string filename = "skup_podataka.csv";
+    vector<InputDataStructure> records = readCSV(filename);
     vector<InputDataStructure> heap;
 
     for (vector<InputDataStructure>::iterator it = records.begin(); it != records.end(); ++it)
